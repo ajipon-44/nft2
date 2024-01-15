@@ -22,7 +22,7 @@ const main = async () => {
   await memberNFT.deployed(); // デプロイ完了を待つ
 
   console.log(
-    `Contract deployed to: https://goerli.etherscan.io/address/${memberNFT.address}`
+    `Contract deployed to: https://sepolia.etherscan.io/address/${memberNFT.address}`
   );
 
   // NFTをmintする
