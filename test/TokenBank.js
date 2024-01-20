@@ -51,6 +51,7 @@ describe("TokenBankコントラクト", function () {
       expect(endAddr1Balance).to.equal(startAddr1Balance.sub(100));
       expect(endAddr2Balance).to.equal(startAddr2Balance.add(100));
     });
+    // エラーはPromiseオブジェクトから取得する
     it("ゼロアドレス宛の移転は失敗すべき", async function () {
       await expect(tokenBank.transfer(zeroAddress, 100)).to.be.revertedWith(
         "Zero address cannot be specified for 'to'!"
@@ -61,6 +62,7 @@ describe("TokenBankコントラクト", function () {
         tokenBank.connect(addr1).transfer(addr2.address, 510)
       ).to.be.revertedWith("Insufficient balance!");
     });
+    // イベントはPromiseオブジェクトから取得する
     it("移転後には'TokenTransfer'イベントが発行されるべき", async function () {
       await expect(tokenBank.connect(addr1).transfer(addr2.address, 100))
         .to.emit(tokenBank, "TokenTransfer")
