@@ -31,8 +31,25 @@ export default function Home() {
     }
   };
 
+  const checkChainId = async () => {
+    const { ethereum } = window;
+    if (ethereum) {
+      const chain = await ethereum.request({ method: "eth_chainId" });
+      console.log(`chain: ${chain}`);
+
+      if (chain != sepoliaId) {
+        alert("Please connect Sepolia Network");
+        setChainId(false);
+        return;
+      } else {
+        setChainId(true);
+      }
+    }
+  };
+
   useEffect(() => {
     checkMetaMaskInstalled();
+    checkChainId();
   }, []);
 
   return (
