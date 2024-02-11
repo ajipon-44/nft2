@@ -84,8 +84,8 @@ export default function Home() {
         ethereum.on("accountsChanged", checkAccountChanged);
         ethereum.on("chainChanged", checkChainId);
       }
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -123,6 +123,54 @@ export default function Home() {
     if (balance.toNumber() > 0) {
       setNftOwner(true);
     }
+  };
+
+  const tokenTransfer = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    if (
+      tokenBalance >= inputData.transferAmount &&
+      zeroAddress != inputData.transferAddress
+    ) {
+      try {
+        const { ethereum } = window;
+        const provider = new ethers.providers.Web3Provider(
+          ethereum as unknown as ExternalProvider
+        );
+        const signer = provider.getSigner();
+
+        const tokenBankContract = new ethers.Contract(
+          tokenBankAddress,
+          TokenBank.abi,
+          signer
+        );
+        const tx = await tokenBankContract.transfer(
+          inputData.transferAddress,
+          inputData.transferAmount
+        );
+        await tx.wait();
+
+        const tBalance = await tokenBankContract.balanceOf(account);
+        setTokenBalance(tBalance.toNumber());
+        setInputData((prevData) => ({
+          ...prevData,
+          transferAddress: "",
+          transferAmount: "",
+        }));
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      alert(
+        "Tokens exceeding the balance in your possession and addresses to zero addresses cannot be specified."
+      );
+    }
+  };
+
+  const handler = (e: { target: { name: string; value: string } }) => {
+    setInputData((prevData) => ({
+      ...prevData,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   useEffect(() => {
@@ -192,6 +240,36 @@ export default function Home() {
                   預入残高：{bankBalance}
                 </span>
               </div>
+              {nftOwner ? (
+                <>
+                  <form className="flex pl-1 py-1 mb-1 bg-white border border-gray-400">
+                    <input
+                      type="text"
+                      className="w-5/12 ml-2 text-center border border-gray-400"
+                      name="transferAddress"
+                      placeholder="Wallet Address"
+                      onChange={handler}
+                      value={inputData.transferAddress}
+                    />
+                    <input
+                      type="text"
+                      className="w-5/12 ml-2 text-right border border-gray-400"
+                      name="transferAmount"
+                      placeholder={`100`}
+                      onChange={handler}
+                      value={inputData.transferAmount}
+                    />
+                    <button
+                      className="w-2/12 mx-2 bg-white hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded"
+                      onClick={tokenTransfer}
+                    >
+                      移転
+                    </button>
+                  </form>
+                </>
+              ) : (
+                <></>
+              )}
             </div>
           ) : (
             <div className="flex flex-col justify-center items-center mb-20 font-bold text-2xl gap-y-3">
