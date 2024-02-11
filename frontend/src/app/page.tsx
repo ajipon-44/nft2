@@ -7,6 +7,13 @@ import MemberNFT from "../../contracts/MemberNFT.json";
 import TokenBank from "../../contracts/TokenBank.json";
 import type { ExternalProvider } from "@ethersproject/providers";
 import Image from "next/image";
+import { MetaMaskInpageProvider } from "@metamask/providers";
+
+declare global {
+  interface Window {
+    ethereum?: MetaMaskInpageProvider;
+  }
+}
 
 interface Item {
   tokenId: string;
