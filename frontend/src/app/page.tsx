@@ -186,8 +186,11 @@ export default function Home() {
 
         const tBalance = await tokenBankContract.balanceOf(account);
         const bBalance = await tokenBankContract.bankBalanceOf(account);
+        const totalDeposit = await tokenBankContract.bankTotalDeposit();
         setTokenBalance(tBalance.toNumber());
         setBankBalance(bBalance.toNumber());
+        setBankTotalDeposit(totalDeposit.toNumber());
+
         setInputData((prevData) => ({
           ...prevData,
           depositAmount: "",
@@ -199,6 +202,43 @@ export default function Home() {
       alert(
         "Tokens exceeding the balance in your possession cannot be deposited."
       );
+    }
+  };
+
+  const tokenWithdraw = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    if (bankBalance >= inputData.withdrawAmount) {
+      try {
+        const { ethereum } = window;
+        const provider = new ethers.providers.Web3Provider(
+          ethereum as unknown as ExternalProvider
+        );
+        const signer = provider.getSigner();
+
+        const tokenBankContract = new ethers.Contract(
+          tokenBankAddress,
+          TokenBank.abi,
+          signer
+        );
+        const tx = await tokenBankContract.withDraw(inputData.withdrawAmount);
+        await tx.wait();
+
+        const tBalance = await tokenBankContract.balanceOf(account);
+        const bBalance = await tokenBankContract.bankBalanceOf(account);
+        const totalDeposit = await tokenBankContract.bankTotalDeposit();
+        setTokenBalance(tBalance.toNumber());
+        setBankBalance(bBalance.toNumber());
+        setBankTotalDeposit(totalDeposit.toNumber());
+
+        setInputData((prevData) => ({
+          ...prevData,
+          withdrawAmount: "",
+        }));
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      alert("Tokens exceeding the deposit balance cannot be withdrawn.");
     }
   };
 
@@ -316,6 +356,22 @@ export default function Home() {
                       onClick={tokenDeposit}
                     >
                       預入
+                    </button>
+                  </form>
+                  <form className="flex pl-1 py-1 mb-1 bg-white border border-gray-400">
+                    <input
+                      type="text"
+                      className="w-10/12 ml-2 text-right border border-gray-400"
+                      name="withdrawAmount"
+                      placeholder={`100`}
+                      onChange={handler}
+                      value={inputData.withdrawAmount}
+                    />
+                    <button
+                      className="w-2/12 mx-2 bg-white hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded"
+                      onClick={tokenWithdraw}
+                    >
+                      引出
                     </button>
                   </form>
                 </>
