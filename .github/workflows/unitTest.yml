@@ -3,11 +3,11 @@ on: [push]
 jobs:
   unit-test:
     name: Unit test
-    runs-on: ubuntst
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Set Node.js 21.x
-        uses: actions/setup-node@3
+        uses: actions/setup-node@v3
         with:
           node-version: 21
       - name: Install dependencies
