@@ -1,0 +1,16 @@
+name: Solidity Unit Test
+on: [push]
+jobs:
+  unit-test:
+    name: Unit test
+    runs-on: ubuntst
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set Node.js 21.x
+        uses: actions/setup-node@3
+        with:
+          node-version: 21
+      - name: Install dependencies
+        run: npm ci
+      - name: Run Test
+        run: npm test
