@@ -54,7 +54,7 @@ Non-NFT holders can receive money but cannot perform other transactions.
 
 ## System Architecture
 
-<img src="system_schema.png" width="30%">
+<img src="system_schema.png" width="50%">
 
 ## Deploy
 
