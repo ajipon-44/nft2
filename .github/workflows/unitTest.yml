@@ -5,12 +5,11 @@ jobs:
     name: Unit test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Set Node.js 21.x
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set Node.js
         uses: actions/setup-node@v3
+      - name: Test
+        uses: ambersun1234/hardhat-test-action@v1
         with:
-          node-version: 21
-      - name: Install dependencies
-        run: npm ci
-      - name: Run Test
-        run: npm test
+          network: hardhat
