@@ -7,6 +7,9 @@
 3. [ディレクトリ構成](#ディレクトリ構成)
 4. [デプロイ先](#デプロイ先)
 
+<a href="https://github.com/ajipon-44/nft2/blob/main/docs/README.md">
+  English README
+</a>
 <!-- プロジェクトについて -->
 
 ## プロジェクトについて
