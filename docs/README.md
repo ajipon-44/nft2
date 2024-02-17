@@ -52,6 +52,10 @@ Non-NFT holders can receive money but cannot perform other transactions.
 | Github Actions | CI      |
 | Vercel         | CD      |
 
+## System Architecture
+
+<img src="system_schema.png" width="30%">
+
 ## Deploy
 
 https://nft2-d3r7smpuy-ajipon-44s-projects.vercel.app/

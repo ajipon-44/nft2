@@ -56,7 +56,9 @@ NFT を所持していない人はお金の受け取りは可能だが，他の�
 | Github Actions | CI       |
 | Vercel         | CD       |
 
-## ディレクトリ構成
+## システム構成
+
+<img src="docs/system_schema.png" width="30%">
 
 ## デプロイ先
 
