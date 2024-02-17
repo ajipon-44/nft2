@@ -1,0 +1,15 @@
+name: Solidity Unit Test
+on: [push]
+jobs:
+  unit-test:
+    name: Unit test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set Node.js
+        uses: actions/setup-node@v3
+      - name: Test
+        uses: ambersun1234/hardhat-test-action@v1
+        with:
+          network: hardhat
